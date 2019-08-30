@@ -11,5 +11,6 @@ namespace Interface.Helpers
         Task OnDisconnected(Tobj model);
         Task OnDisconnected(Tkey id);
         Task SendMessage(Tobj model, string message);
+        Task SendMessage(Tkey id, string message);
     }
 }

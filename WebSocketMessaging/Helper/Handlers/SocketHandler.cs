@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Helper.Handlers
 {
-    public class SocketHandler : IHandler<string, WebSocket>
+    public abstract class SocketHandler : IHandler<string, WebSocket>
     {
-        ISocketManager _socketManager;
+        public readonly ISocketManager _socketManager;
 
         public SocketHandler(ISocketManager socketManager)
         {
@@ -44,5 +44,12 @@ namespace Helper.Handlers
                 true,
                 CancellationToken.None);
         }
+
+        public async Task SendMessage(string id, string message)
+        {
+            await SendMessage(_socketManager.GetConnectionById(id), message);
+        }
+
+        public abstract Task Receive(WebSocket socket, WebSocketReceiveResult result, byte[] buffer);
     }
 }
