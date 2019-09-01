@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
@@ -12,17 +13,25 @@ namespace Client
     {
         static void Main(string[] args)
         {
-            //if (Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName).Count() <= 2)
-            //{
-            //    Process.Start("Client.exe");
-            //}
+            //Console.WriteLine("İsim Giriniz: ");
+            //var name = Console.ReadLine();
+            //RegisterSocket(name).GetAwaiter().GetResult(); Şimdilik yetişmedi.
             StartWebSockets().GetAwaiter().GetResult();
+        }
+
+
+        public static async Task RegisterSocket(string name)
+        {
+            using (var client = new HttpClient())
+            {
+                var response = await client.GetAsync("http://localhost:5000/api/Account/Register?name=" + name);
+            }
         }
 
         public static async Task StartWebSockets()
         {
             var client = new ClientWebSocket();
-            await client.ConnectAsync(new Uri("ws://localhost:5000/ws"), CancellationToken.None);
+            await client.ConnectAsync(new Uri("ws://localhost:5000/chat"), CancellationToken.None);
             Console.WriteLine($"I Connected {DateTime.Now}");
             var send = Task.Run(
                 async () =>

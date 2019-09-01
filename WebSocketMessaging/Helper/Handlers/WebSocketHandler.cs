@@ -22,6 +22,11 @@ namespace Helper.Handlers
             WebSocketConnectionManager.AddSocket(socket);
         }
 
+        public virtual async Task OnConnected(WebSocket socket, string name)
+        {
+            WebSocketConnectionManager.AddSocket(socket, name);
+        }
+
         public virtual async Task OnDisconnected(WebSocket socket)
         {
             await WebSocketConnectionManager.RemoveSocket(WebSocketConnectionManager.GetId(socket));

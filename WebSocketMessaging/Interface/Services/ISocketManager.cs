@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Model;
 using System.Net.WebSockets;
-using System.Text;
 
 namespace Interface.ServiceInterfaces
 {
-    public interface ISocketManager : IConnectionManager<string, WebSocket>
+    public interface ISocketManager : IConnectionManager<SocketModel, WebSocket>
     {
     }
 }

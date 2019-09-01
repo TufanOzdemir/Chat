@@ -1,7 +1,7 @@
 ﻿using Interface.ServiceInterfaces;
+using Model;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Threading;
@@ -11,25 +11,36 @@ namespace SocketService
 {
     public class WebSocketConnectionManager : ISocketManager
     {
-        private ConcurrentDictionary<string, WebSocket> _sockets = new ConcurrentDictionary<string, WebSocket>();
+        private ConcurrentDictionary<SocketModel, WebSocket> _sockets = new ConcurrentDictionary<SocketModel, WebSocket>();
         public WebSocket GetSocketById(string id)
         {
-            return _sockets.FirstOrDefault(p => p.Key == id).Value;
+            return _sockets.FirstOrDefault(p => p.Key.Id == id).Value;
         }
 
-        public ConcurrentDictionary<string, WebSocket> GetAll()
+        public ConcurrentDictionary<SocketModel, WebSocket> GetAll()
         {
             return _sockets;
         }
 
         public string GetId(WebSocket socket)
         {
+            return _sockets.FirstOrDefault(p => p.Value == socket).Key.Id;
+        }
+
+        public SocketModel GetSocketModel(WebSocket socket)
+        {
             return _sockets.FirstOrDefault(p => p.Value == socket).Key;
         }
-        public void AddSocket(WebSocket socket)
+
+        public SocketModel GetSocketModelById(string id)
+        {
+            return _sockets.FirstOrDefault(p => p.Key.Id == id).Key;
+        }
+
+        public void AddSocket(WebSocket socket, string title = "")
         {
             string sId = ConnectionIdFactory();
-            while (!_sockets.TryAdd(sId, socket))
+            while (!_sockets.TryAdd(new SocketModel { Id = sId, Name = title }, socket))
             {
                 sId = ConnectionIdFactory();
             }
@@ -39,7 +50,8 @@ namespace SocketService
         {
             try
             {
-                _sockets.TryRemove(id, out var socket);
+                var model = GetSocketModelById(id);
+                _sockets.TryRemove(model, out var socket);
                 await socket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
             }
             catch (Exception)

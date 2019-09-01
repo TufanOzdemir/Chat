@@ -6,9 +6,10 @@ namespace Interface.ServiceInterfaces
     public interface IConnectionManager<Tkey, Tobj>
     {
         ConcurrentDictionary<Tkey, Tobj> GetAll();
-        Tkey GetId(Tobj model);
-        Tobj GetSocketById(Tkey id);
-        void AddSocket(Tobj model);
-        Task RemoveSocket(Tkey id);
+        string GetId(Tobj model);
+        Tkey GetSocketModelById(string id);
+        Tobj GetSocketById(string id);
+        void AddSocket(Tobj model, string title);
+        Task RemoveSocket(string id);
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using SocketService;
+using System;
 
 namespace Helper.Extensions
 {
@@ -21,6 +22,12 @@ namespace Helper.Extensions
             services.AddTransient<WebSocketConnectionManager>();
             services.AddSingleton(typeof(ChatRoomHandler));
             return services;
+        }
+
+        public static string GetWebSocketName(this string name)
+        {
+            name += "-" + Guid.NewGuid().ToString().Substring(0, 3);
+            return name;
         }
     }
 }
