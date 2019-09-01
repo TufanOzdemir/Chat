@@ -9,8 +9,7 @@ namespace Interface.Helpers
     {
         Task OnConnected(Tobj model);
         Task OnDisconnected(Tobj model);
-        Task OnDisconnected(Tkey id);
-        Task SendMessage(Tobj model, string message);
-        Task SendMessage(Tkey id, string message);
+        Task SendMessageAsync(Tobj model, string message);
+        Task SendMessageAsync(Tkey id, string message);
     }
 }
