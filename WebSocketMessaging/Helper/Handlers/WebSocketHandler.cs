@@ -32,6 +32,12 @@ namespace Helper.Handlers
             await WebSocketConnectionManager.RemoveSocket(WebSocketConnectionManager.GetId(socket));
         }
 
+        /// <summary>
+        /// Mesaj gönderir.
+        /// </summary>
+        /// <param name="socket"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public async Task SendMessageAsync(WebSocket socket, string message)
         {
             if (socket.State != WebSocketState.Open)
@@ -45,6 +51,12 @@ namespace Helper.Handlers
                                    cancellationToken: CancellationToken.None);
         }
 
+        /// <summary>
+        /// Mesaj gönderir.
+        /// </summary>
+        /// <param name="socketId"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public async Task SendMessageAsync(string socketId, string message)
         {
             try
@@ -58,6 +70,11 @@ namespace Helper.Handlers
 
         }
 
+        /// <summary>
+        /// Chatteki herkese mesaj gönderir.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public async Task SendMessageToAllAsync(string message)
         {
             foreach (var pair in WebSocketConnectionManager.GetAll())
